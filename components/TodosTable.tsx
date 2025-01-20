@@ -3,60 +3,17 @@ import {
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "./ui/button";
-import { Pen, Trash } from "lucide-react";
+import { ITodo } from "@/interfaces";
+import TodosActions from "./TodosActions";
+import { Badge } from "./ui/badge";
+import { auth } from "@clerk/nextjs/server";
 
-const invoices = [
-  {
-    invoice: "INV001",
-    paymentStatus: "Paid",
-    totalAmount: "$250.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV002",
-    paymentStatus: "Pending",
-    totalAmount: "$150.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV003",
-    paymentStatus: "Unpaid",
-    totalAmount: "$350.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV004",
-    paymentStatus: "Paid",
-    totalAmount: "$450.00",
-    paymentMethod: "Credit Card",
-  },
-  {
-    invoice: "INV005",
-    paymentStatus: "Paid",
-    totalAmount: "$550.00",
-    paymentMethod: "PayPal",
-  },
-  {
-    invoice: "INV006",
-    paymentStatus: "Pending",
-    totalAmount: "$200.00",
-    paymentMethod: "Bank Transfer",
-  },
-  {
-    invoice: "INV007",
-    paymentStatus: "Unpaid",
-    totalAmount: "$300.00",
-    paymentMethod: "Credit Card",
-  },
-];
-
-export default function TodosTable() {
+export default async function TodosTable({ todos }: { todos: ITodo[] }) {
+  const { userId } = await auth();
   return (
     <Table>
       <TableCaption>A list of your recent invoices.</TableCaption>
@@ -69,20 +26,19 @@ export default function TodosTable() {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map((invoice) => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className="font-medium">
-              677c70f756b464d22b389497
+        {todos.map((todo) => (
+          <TableRow key={todo.id}>
+            <TableCell className="font-medium">{todo.id}</TableCell>
+            <TableCell>{todo.title}</TableCell>
+            <TableCell className="text-left">
+              {todo.completed ? (
+                <Badge>Completed</Badge>
+              ) : (
+                <Badge variant={"secondary"}>Incompleted</Badge>
+              )}
             </TableCell>
-            <TableCell>aegre sum cursim</TableCell>
-            <TableCell className="text-left">Incomplete</TableCell>
             <TableCell className="space-x-2 flex justify-end">
-              <Button variant={"default"} size={"icon"}>
-                <Pen />
-              </Button>
-              <Button variant={"destructive"} size={"icon"}>
-                <Trash />
-              </Button>
+              <TodosActions todo={todo} userId={userId as string} />
             </TableCell>
           </TableRow>
         ))}

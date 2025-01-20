@@ -1,14 +1,18 @@
-import { ModeToggle } from "@/components/ModeToggle";
-import TodoForm from "@/components/TodoForm";
+import { getTodosAction } from "@/actions/todos.actions";
+import AddTodoForm from "@/components/AddTodoForm";
+import Navbar from "@/components/Navbar";
 import TodosTable from "@/components/TodosTable";
+import { auth } from "@clerk/nextjs/server";
 
-export default function Home() {
+export default async function Home() {
+  const { userId } = await auth();
+  const todos = await getTodosAction();
   return (
     <>
-      <ModeToggle />
+      <Navbar />
       <main className="container mx-auto">
-        <TodoForm />
-        <TodosTable />
+        <AddTodoForm userId={userId as string} />
+        <TodosTable todos={todos} />
       </main>
     </>
   );
