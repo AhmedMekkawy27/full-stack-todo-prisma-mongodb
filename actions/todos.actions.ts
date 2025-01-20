@@ -1,11 +1,7 @@
 "use server"
-
-import { TodoFormValues } from "@/components/AddTodoForm"
 import { ITodo } from "@/interfaces"
-import { PrismaClient } from "@prisma/client"
+import prisma from "@/prisma/client"
 import { revalidatePath } from "next/cache"
-
-const prisma = new PrismaClient()
 
 export const getUserTodosAction = async ({user_id}:{user_id: string}) => {
 
