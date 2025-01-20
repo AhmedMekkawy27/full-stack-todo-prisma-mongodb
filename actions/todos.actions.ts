@@ -7,10 +7,14 @@ import { revalidatePath } from "next/cache"
 
 const prisma = new PrismaClient()
 
-export const getTodosAction = async () => {
+export const getUserTodosAction = async ({user_id}:{user_id: string}) => {
+
         return await prisma.todo.findMany({
                 orderBy:{
                         createdAt: "desc",
+                },
+                where:{
+                        user_id
                 }
         })
 

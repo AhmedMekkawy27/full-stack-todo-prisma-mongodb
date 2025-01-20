@@ -1,4 +1,4 @@
-import { getTodosAction } from "@/actions/todos.actions";
+import { getUserTodosAction } from "@/actions/todos.actions";
 import AddTodoForm from "@/components/AddTodoForm";
 import Navbar from "@/components/Navbar";
 import TodosTable from "@/components/TodosTable";
@@ -6,7 +6,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export default async function Home() {
   const { userId } = await auth();
-  const todos = await getTodosAction();
+  const todos = await getUserTodosAction({ user_id: userId as string });
   return (
     <>
       <Navbar />

@@ -3,6 +3,7 @@ import {
   TableBody,
   TableCaption,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -16,7 +17,7 @@ export default async function TodosTable({ todos }: { todos: ITodo[] }) {
   const { userId } = await auth();
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>A list of your todos.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>ID</TableHead>
@@ -26,23 +27,33 @@ export default async function TodosTable({ todos }: { todos: ITodo[] }) {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {todos.map((todo) => (
-          <TableRow key={todo.id}>
-            <TableCell className="font-medium">{todo.id}</TableCell>
-            <TableCell>{todo.title}</TableCell>
-            <TableCell className="text-left">
-              {todo.completed ? (
-                <Badge>Completed</Badge>
-              ) : (
-                <Badge variant={"secondary"}>Incompleted</Badge>
-              )}
-            </TableCell>
-            <TableCell className="space-x-2 flex justify-end">
-              <TodosActions todo={todo} userId={userId as string} />
-            </TableCell>
-          </TableRow>
-        ))}
+        {todos.length > 0 &&
+          todos.map((todo) => (
+            <TableRow key={todo.id}>
+              <TableCell className="font-medium">{todo.id}</TableCell>
+              <TableCell>{todo.title}</TableCell>
+              <TableCell className="text-left">
+                {todo.completed ? (
+                  <Badge>Completed</Badge>
+                ) : (
+                  <Badge variant={"secondary"}>Incompleted</Badge>
+                )}
+              </TableCell>
+              <TableCell className="space-x-2 flex justify-end">
+                <TodosActions todo={todo} userId={userId as string} />
+              </TableCell>
+            </TableRow>
+          ))}
       </TableBody>
+      <TableFooter>
+        <TableRow>
+          {todos.length == 0 && (
+            <TableCell colSpan={4} className="text-center">
+              You don't have any todos
+            </TableCell>
+          )}
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 }
