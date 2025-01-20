@@ -1,12 +1,6 @@
 "use client";
 
-const ErrorComponent = ({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) => {
+const ErrorComponent = ({ reset }: { reset: () => void }) => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-md max-w-md text-center">
